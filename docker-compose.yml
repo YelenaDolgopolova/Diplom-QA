@@ -13,10 +13,10 @@ services:
       - POSTGRES_DB=app
 
 
-        mysqldb:
-          image: mysql:latest
-          ports:
-            - '3306:3306'
+  mysqldb:
+    image: mysql:latest
+      ports:
+        - '3306:3306'
           volumes:
             - ./msdata:/var/lib/mysql
           environment:
@@ -24,3 +24,9 @@ services:
             - MYSQL_DATABASE=app
             - MYSQL_USER=app
             - MYSQL_PASSWORD=pass
+
+ node-app:
+      build: .
+      image: node-app:1.0
+      ports:
+        - '9999:9999'

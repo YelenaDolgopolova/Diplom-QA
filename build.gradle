@@ -35,9 +35,16 @@ dependencies {
     testImplementation 'com.codeborne:selenide:5.18.0'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'io.qameta.allure:allure-selenide:2.13.3'
+    testImplementation 'mysql:mysql-connector-java:8.0.25'
+    testImplementation 'org.postgresql:postgresql:42.2.24.jre7'
 }
 
 test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'allure.results.directory', "$projectDir/build/allure-results"
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'true')
+    systemProperty 'url', System.getProperty('url', 'jdbc:mysql://185.119.56.254:3306/app')
+    systemProperty 'db.login' , System.getProperty('db.login', 'app')
+    systemProperty 'db.password' , System.getProperty('db.password', 'pass')
 }
