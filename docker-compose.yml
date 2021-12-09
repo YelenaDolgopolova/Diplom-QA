@@ -1,32 +1,35 @@
 version: '3.7'
 services:
+  mysqldb:
+    image: mysql:latest
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./msdata:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=pass
 
-  postgresSql:
-    image: postgres:12-alpine
+  postgresdb:
+    image: postgres:latest
     ports:
       - '5432:5432'
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql
     environment:
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_USER=app
       - POSTGRES_DB=app
-
-
-  mysqldb:
-    image: mysql:latest
-      ports:
-        - '3306:3306'
-          volumes:
-            - ./msdata:/var/lib/mysql
-          environment:
-            - MYSQL_RANDOM_ROOT_PASSWORD=yes
-            - MYSQL_DATABASE=app
-            - MYSQL_USER=app
-            - MYSQL_PASSWORD=pass
-
- node-app:
-      build: .
-      image: node-app:1.0
-      ports:
-        - '9999:9999'
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=pass
+  node:
+    image: node:8
+    user: node
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./gate-simulator:/home/node/app
+    ports:
+      - '9999:9999'
+    command: "npm start"
