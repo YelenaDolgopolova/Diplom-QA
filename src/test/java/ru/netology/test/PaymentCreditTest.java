@@ -26,7 +26,7 @@ public class PaymentCreditTest {
     @BeforeEach
     void setUp(){
 
-        open("http://185.119.56.254:8080/");
+        open("http://localhost:8080/");
     }
 
     @AfterAll
@@ -38,7 +38,7 @@ public class PaymentCreditTest {
     void shouldPaymentCreditCardStatusApproved(){
         val dashboardPage = new DashboardPage();
         val paymentCreditCard = new PaymentCreditCard();
-        dashboardPage.getDebitCard();
+        dashboardPage.getCreditCard();
         val cardNumber = DataHelper.getApprovedCardNumber();
         val month = DataHelper.getMonth();
         val year = DataHelper.getYear();
@@ -49,6 +49,62 @@ public class PaymentCreditTest {
         val paymentStatus = SqlHelper.getStatusCreditRequestEntity();
         assertEquals("APPROVED", paymentStatus);
     }
+    @Test
+    void shouldPaymentCreditWithStatusDeclined(){
+        val dashboardPage = new DashboardPage();
+        val paymentCreditCard = new PaymentCreditCard();
+        dashboardPage.getCreditCard();
+        val cardNumber = DataHelper.getDeclinedCardNumber();
+        val month = DataHelper.getMonth();
+        val year = DataHelper.getYear();
+        val cvccvv = DataHelper.getCorrectCVCCVV();
+        val owner = DataHelper.getValidOwner();
+        paymentCreditCard.fillingFieldsFormat(cardNumber, month, year,cvccvv, owner);
+        paymentCreditCard.checkErrorNotification();
+        val paymentStatus = SqlHelper.getStatusCreditRequestEntity();
+        assertEquals("DECLINES", paymentStatus);
+    }
 
+    @Test
+    void shouldDontSuccessByCreditWithAnotherCard(){
+        val dashboardPage = new DashboardPage();
+        val paymentCreditCard = new PaymentCreditCard();
+        dashboardPage.getCreditCard();
+        val cardNumber = DataHelper.getDeclinedCardNumber();
+        val month = DataHelper.getMonth();
+        val year = DataHelper.getYear();
+        val cvccvv = DataHelper.getCorrectCVCCVV();
+        val owner = DataHelper.getValidOwner();
+        paymentCreditCard.fillingFieldsFormat(cardNumber, month, year,cvccvv, owner);
+        paymentCreditCard.checkErrorNotification();
+    }
+
+    @Test
+    void shouldDontSuccessByCreditCardNumberWithNulls(){
+        val dashboardPage = new DashboardPage();
+        val paymentCreditCard = new PaymentCreditCard();
+        dashboardPage.getCreditCard();
+        val cardNumber = DataHelper.getCardWithoutNumber();
+        val month = DataHelper.getMonth();
+        val year = DataHelper.getYear();
+        val cvccvv = DataHelper.getCorrectCVCCVV();
+        val owner = DataHelper.getValidOwner();
+        paymentCreditCard.fillingFieldsFormat(cardNumber, month, year,cvccvv, owner);
+        paymentCreditCard.checkErrorNotification();
+    }
+
+    @Test
+    void shouldDontSuccessByCreditWithEmptyFieldCardNumber(){
+        val dashboardPage = new DashboardPage();
+        val paymentCreditCard = new PaymentCreditCard();
+        dashboardPage.getCreditCard();
+        val cardNumber = DataHelper.getCardWithoutNumber();
+        val month = DataHelper.getMonth();
+        val year = DataHelper.getYear();
+        val cvccvv = DataHelper.getCorrectCVCCVV();
+        val owner = DataHelper.getValidOwner();
+        paymentCreditCard.fillingFieldsFormat(cardNumber, month, year,cvccvv, owner);
+        paymentCreditCard.checkWrongFormatMessage();
+    }
 
 }
