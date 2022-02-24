@@ -47,7 +47,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+
     systemProperty 'allure.results.directory', "$projectDir/build/allure-results"
     systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'true')
     systemProperty 'url', System.getProperty('url', 'jdbc:mysql://185.119.56.254:3306/app')
