@@ -227,7 +227,7 @@ public class PaymentCreditTest {
     //Owner
 
     @Test
-    void shouldDontSuccessByCreditOwnerWithRusLetters(){
+    void shouldDontSuccessByCreditOwnerWithRus(){
         val dashboardPage = new DashboardPage();
         val paymentFormCredit = new PaymentCreditCard();
         dashboardPage.getCreditCard();
@@ -237,7 +237,8 @@ public class PaymentCreditTest {
         val cvccvv = DataHelper.getCorrectCVCCVV();
         val owner = DataHelper.getOwnerWithRusLetters();
         paymentFormCredit.fillingFieldsFormat(cardNumber, month, year, cvccvv, owner);
-        paymentFormCredit.checkWrongFormatMessage();
+        paymentFormCredit.checkErrorNotification();
+
     }
 
     @Test
@@ -251,7 +252,7 @@ public class PaymentCreditTest {
         val cvccvv = DataHelper.getCorrectCVCCVV();
         val owner = DataHelper.getOwnerWithNumbers();
         paymentFormCredit.fillingFieldsFormat(cardNumber, month, year, cvccvv, owner);
-        paymentFormCredit.checkWrongFormatMessage();
+        paymentFormCredit.checkErrorNotification();
     }
 
     @Test
@@ -265,7 +266,7 @@ public class PaymentCreditTest {
         val cvccvv = DataHelper.getCorrectCVCCVV();
         val owner = DataHelper.getOwnerWithSpecialSymbols();
         paymentFormCredit.fillingFieldsFormat(cardNumber, month, year, cvccvv, owner);
-        paymentFormCredit.checkWrongFormatMessage();
+        paymentFormCredit.checkErrorNotification();
     }
 
     @Test
